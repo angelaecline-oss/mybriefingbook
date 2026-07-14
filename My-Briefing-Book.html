@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Briefing Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --red: #c0392b;
+    --gold: #b8972a;
+    --gray: #6b6560;
+    --light-gray: #d4cfc6;
+    --white: #fdfbf7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: var(--white);
+    border-bottom: 3px double var(--ink);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .masthead-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px 14px;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  .date-line {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .site-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .site-title a {
+    text-decoration: none;
+    color: var(--ink);
+    transition: color 0.2s;
+  }
+
+  .site-title a:hover { color: var(--red); }
+
+  .tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gray);
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 48px;
+  }
+
+  .nav-bar a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 10px 22px;
+    border-right: 1px solid var(--light-gray);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .nav-bar a:first-child { border-left: 1px solid var(--light-gray); }
+  .nav-bar a:hover { background: var(--ink); color: var(--white); }
+  .nav-bar a.active { background: var(--red); color: var(--white); }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    background: var(--ink);
+    color: var(--white);
+    padding: 64px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(255,255,255,0.025) 28px,
+      rgba(255,255,255,0.025) 29px
+    );
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-kicker::before, .hero-kicker::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 40px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    max-width: 540px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HOME PAGE ── */
+  .section-rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 48px 32px;
+  }
+
+  .section-rule span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gray);
+    white-space: nowrap;
+  }
+
+  .section-rule::before, .section-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light-gray);
+  }
+
+  .section-rule.red span { color: var(--red); }
+  .section-rule.red::before, .section-rule.red::after { background: var(--red); opacity: 0.4; }
+
+  /* LEAD STORIES GRID */
+  .lead-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 0;
+    padding: 0 48px;
+    margin-bottom: 8px;
+  }
+
+  .column-divider {
+    background: var(--light-gray);
+    margin: 0 24px;
+  }
+
+  .story-card {
+    padding: 0 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .story-card:hover { opacity: 0.8; }
+
+  .story-card.featured {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    padding: 0;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 32px;
+  }
+
+  .story-region {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .story-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+
+  .story-card.featured .story-headline {
+    font-size: 32px;
+  }
+
+  .story-card:not(.featured) .story-headline {
+    font-size: 20px;
+    border-top: 2px solid var(--ink);
+    padding-top: 12px;
+  }
+
+  .story-excerpt {
+    font-size: 15px;
+    color: #3d3a36;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .story-excerpt a,
+  #page-deepdive a,
+  #page-daily a,
+  #page-background a {
+    color: var(--red) !important;
+    text-decoration: underline !important;
+  }
+
+  .story-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    margin-top: 10px;
+  }
+
+  .story-img-placeholder {
+    background: var(--cream);
+    border: 1px solid var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--gray);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .story-img-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(0,0,0,0.03) 8px,
+      rgba(0,0,0,0.03) 9px
+    );
+  }
+
+  /* DIGEST STRIP */
+  .digest-strip {
+    background: var(--ink);
+    color: var(--white);
+    padding: 28px 48px;
+    margin: 40px 0;
+  }
+
+  .digest-strip h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .digest-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .digest-item {
+    border-left: 2px solid rgba(255,255,255,0.15);
+    padding-left: 16px;
+  }
+
+  .digest-item .region {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .digest-item p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.82);
+    font-weight: 300;
+  }
+
+  /* ── ABOUT PAGE ── */
+  .about-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 48px;
+  }
+
+  .about-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .about-wrap h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .about-wrap p {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+    font-weight: 300;
+    color: #2c2a27;
+  }
+
+  .about-wrap p strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .about-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 48px 0;
+    border: 1px solid var(--light-gray);
+  }
+
+  .pillar {
+    padding: 28px 24px;
+    border-right: 1px solid var(--light-gray);
+  }
+
+  .pillar:last-child { border-right: none; }
+
+  .pillar-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .pillar h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .pillar p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 0 !important;
+    color: var(--gray) !important;
+  }
+
+  .about-sign {
+    border-top: 1px solid var(--light-gray);
+    padding-top: 32px;
+    margin-top: 8px;
+  }
+
+  .about-sign p {
+    font-style: italic;
+    font-size: 20px !important;
+    color: var(--ink) !important;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px 48px;
+    margin-top: 64px;
+    border-top: 4px double var(--gold);
+  }
+
+  footer .footer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page.active .hero-inner,
+  .page.active .lead-grid,
+  .page.active .digest-strip,
+  .page.active .about-wrap,
+  .page.active #page-daily > *,
+  .page.active #page-deepdive > *,
+  .page.active #page-essays > * {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .masthead-top { padding: 14px 20px; flex-wrap: wrap; gap: 8px; }
+    .site-title { font-size: 28px; order: -1; width: 100%; text-align: center; }
+    .date-line, .tagline { display: none; }
+    .nav-bar { padding: 0 20px; justify-content: flex-start; overflow-x: auto; }
+    .hero { padding: 40px 20px; }
+    .lead-grid { grid-template-columns: 1fr; padding: 0 20px; }
+    .column-divider { display: none; }
+    .story-card.featured { grid-column: 1; grid-template-columns: 1fr; }
+    .digest-strip { padding: 24px 20px; }
+    .digest-items { grid-template-columns: 1fr 1fr; }
+    .section-rule { margin: 32px 20px 20px; }
+    .about-wrap { padding: 40px 20px; }
+    .about-pillars { grid-template-columns: 1fr; }
+    .pillar { border-right: none; border-bottom: 1px solid var(--light-gray); }
+    #page-deepdive .hero + * + div > div:first-child { grid-template-columns: 1fr !important; }
+    #page-deepdive div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    #page-deepdive div[style*="grid-template-columns:1.6fr"] { grid-template-columns: 1fr !important; }
+    #page-daily .about-wrap, #page-essays .about-wrap,
+    #page-daily > div, #page-essays > div { padding: 0 20px 48px !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-top">
+    <div class="date-line" id="live-date">Loading...</div>
+    <div class="site-title"><a href="#" onclick="showPage('home')">My Briefing Book</a></div>
+    <div class="tagline">What You Need<br>to Know</div>
+  </div>
+  <nav class="nav-bar">
+    <a href="#" class="active" id="nav-home" onclick="showPage('home')">Home</a>
+    <a href="#" id="nav-about" onclick="showPage('about')">About</a>
+    <a href="#" id="nav-daily" onclick="showPage('daily')">Daily Briefing</a>
+    <a href="#" id="nav-deepdive" onclick="showPage('deepdive')">Deep Dive</a>
+    <a href="#" id="nav-background" onclick="showPage('background')">Background Note</a>
+    <a href="#" id="nav-essays" onclick="showPage('essays')">Essays</a>
+  </nav>
+</header>
+
+<!-- ══════════ HOME PAGE ══════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Friday, June 12, 2026</div>
+      <h1>Today's<br><em>Briefing</em></h1>
+      <p class="hero-sub">What you need to know.</p>
+    </div>
+  </section>
+
+  <div class="section-rule red"><span>Today's Top Stories</span></div>
+
+  <div style="max-width: 1100px; margin: 0; padding: 0 48px 48px; display:grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start;">
+
+    <!-- LEFT: Top 5 Stories -->
+    <div>
+
+    <div onclick="showPage('daily','story-1')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">01</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Trump says a "great settlement" has been reached with Iran, canceling planned strikes and predicting a deal could be signed this weekend — ending the war and reopening the Strait of Hormuz.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Middle East · Read more →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('daily','story-2')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">02</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Hours after Trump's announcement, US forces shot down two Iranian drones near the Strait of Hormuz after Tehran fired on a transiting tanker — a reminder of how fragile the deal remains.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Strait of Hormuz · Read more →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('daily','story-3')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">03</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Oil prices fell sharply on the settlement news, with Brent crude dropping toward $88 a barrel from its $126 four-year high — and Asian markets rallied, with Japan's Nikkei surging more than 3%.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Energy Markets · Read more →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('daily','story-4')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">04</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">The World Bank cut its 2026 global growth forecast to 2.5% and pledged up to $100 billion to developing countries hit hardest by the war's energy price shock and inflation surge.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Global Economy · Read more →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('daily','story-5')" class="story-card" style="display:flex; align-items:baseline; gap:16px; padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">05</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">The settlement followed two days of dramatic escalation — a downed US helicopter, retaliatory strikes on Iran, and a threat by Trump to seize Kharg Island and "total control" of Iran's oil industry.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Iran · Read more →</span>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- RIGHT: Strait of Hormuz Map -->
+    <div style="border:1px solid var(--light-gray); border-radius:4px; overflow:hidden;">
+      <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); padding:10px 14px 6px; border-bottom:1px solid var(--light-gray); background:var(--cream);">Strait of Hormuz — Status: Deal Pending, Tensions Persist</div>
+      <div style="position:relative; width:100%; height:300px;">
+        <img src="https://www.nasa.gov/wp-content/uploads/2023/03/iss064e046338.jpg" alt="The Strait of Hormuz, photographed from the International Space Station" style="width:100%; height:300px; object-fit:cover; display:block;">
+        <!-- SVG overlay -->
+        <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 320 300">
+
+          <!-- Mines scattered across the strait channel -->
+          <g fill="#C0392B" opacity="0.9">
+            <circle cx="195" cy="118" r="3"/>
+            <line x1="195" y1="113" x2="195" y2="123" stroke="#C0392B" stroke-width="1"/>
+            <line x1="190" y1="118" x2="200" y2="118" stroke="#C0392B" stroke-width="1"/>
+            <line x1="191.5" y1="111.5" x2="198.5" y2="124.5" stroke="#C0392B" stroke-width="1"/>
+            <line x1="198.5" y1="111.5" x2="191.5" y2="124.5" stroke="#C0392B" stroke-width="1"/>
+
+            <circle cx="212" cy="130" r="3"/>
+            <line x1="212" y1="125" x2="212" y2="135" stroke="#C0392B" stroke-width="1"/>
+            <line x1="207" y1="130" x2="217" y2="130" stroke="#C0392B" stroke-width="1"/>
+            <line x1="208.5" y1="123.5" x2="215.5" y2="136.5" stroke="#C0392B" stroke-width="1"/>
+            <line x1="215.5" y1="123.5" x2="208.5" y2="136.5" stroke="#C0392B" stroke-width="1"/>
+
+            <circle cx="228" cy="145" r="3"/>
+            <line x1="228" y1="140" x2="228" y2="150" stroke="#C0392B" stroke-width="1"/>
+            <line x1="223" y1="145" x2="233" y2="145" stroke="#C0392B" stroke-width="1"/>
+            <line x1="224.5" y1="138.5" x2="231.5" y2="151.5" stroke="#C0392B" stroke-width="1"/>
+            <line x1="231.5" y1="138.5" x2="224.5" y2="151.5" stroke="#C0392B" stroke-width="1"/>
+
+            <circle cx="205" cy="150" r="3"/>
+            <line x1="205" y1="145" x2="205" y2="155" stroke="#C0392B" stroke-width="1"/>
+            <line x1="200" y1="150" x2="210" y2="150" stroke="#C0392B" stroke-width="1"/>
+            <line x1="201.5" y1="143.5" x2="208.5" y2="156.5" stroke="#C0392B" stroke-width="1"/>
+            <line x1="208.5" y1="143.5" x2="201.5" y2="156.5" stroke="#C0392B" stroke-width="1"/>
+          </g>
+
+          <!-- TENSIONS PERSIST pill -->
+          <rect x="170" y="158" width="90" height="20" rx="10" fill="#C0392B" opacity="0.95"/>
+          <text font-family="serif" font-weight="bold" font-size="9" x="215" y="172" text-anchor="middle" fill="white">TENSIONS PERSIST</text>
+
+          <!-- Tankers waiting in Persian Gulf (left side of map) -->
+          <!-- Tanker silhouette def: hull tapered at bow, flat stern, bridge tower at stern -->
+          <g fill="#2c2a27" opacity="0.85">
+            <!-- Tanker 1 -->
+            <path d="M55 150 L82 150 L88 154 L82 158 L55 158 Z"/>
+            <rect x="56" y="144" width="9" height="6" rx="1"/>
+            <!-- Tanker 2 -->
+            <path d="M55 166 L82 166 L88 170 L82 174 L55 174 Z"/>
+            <rect x="56" y="160" width="9" height="6" rx="1"/>
+            <!-- Tanker 3 -->
+            <path d="M55 182 L82 182 L88 186 L82 190 L55 190 Z"/>
+            <rect x="56" y="176" width="9" height="6" rx="1"/>
+            <!-- Tanker 4 -->
+            <path d="M90 150 L117 150 L123 154 L117 158 L90 158 Z" opacity="0.85"/>
+            <rect x="91" y="144" width="9" height="6" rx="1" opacity="0.85"/>
+            <!-- Tanker 5 -->
+            <path d="M90 166 L117 166 L123 170 L117 174 L90 174 Z" opacity="0.85"/>
+            <rect x="91" y="160" width="9" height="6" rx="1" opacity="0.85"/>
+            <!-- Tanker 6 -->
+            <path d="M90 182 L117 182 L123 186 L117 190 L90 190 Z" opacity="0.85"/>
+            <rect x="91" y="176" width="9" height="6" rx="1" opacity="0.85"/>
+          </g>
+
+          <!-- Tanker label -->
+          <rect x="46" y="200" width="84" height="22" rx="3" fill="white" opacity="0.88"/>
+          <text font-family="serif" font-weight="bold" font-size="9" x="88" y="211" text-anchor="middle" fill="#2c2a27">400+ tankers</text>
+          <text font-family="serif" font-size="9" x="88" y="220" text-anchor="middle" fill="#555">anchored, waiting</text>
+
+          <!-- US Navy carrier strike group — Gulf of Oman, enforcing blockade -->
+          <g fill="#1a3a5c" opacity="0.92">
+            <!-- Aircraft carrier: long flat hull with angled bow, large flight-deck superstructure -->
+            <path d="M242 200 L290 200 L296 204 L290 208 L242 208 Z"/>
+            <rect x="258" y="192" width="22" height="8" rx="1"/>
+            <rect x="268" y="186" width="4" height="7"/>
+            <!-- small aircraft marks on deck -->
+            <g fill="#e8e4da" opacity="0.9">
+              <rect x="248" y="201.5" width="6" height="2.5" rx="0.5"/>
+              <rect x="258" y="201.5" width="6" height="2.5" rx="0.5"/>
+            </g>
+
+            <!-- Destroyer 1: smaller tapered hull, single mast -->
+            <path d="M236 218 L262 218 L267 222 L262 226 L236 226 Z" opacity="0.85"/>
+            <rect x="246" y="212" width="10" height="6" rx="1" opacity="0.85"/>
+            <line x1="251" y1="212" x2="251" y2="206" stroke="#1a3a5c" stroke-width="1.5" opacity="0.85"/>
+
+            <!-- Destroyer 2 -->
+            <path d="M276 224 L302 224 L307 228 L302 232 L276 232 Z" opacity="0.85"/>
+            <rect x="286" y="218" width="10" height="6" rx="1" opacity="0.85"/>
+            <line x1="291" y1="218" x2="291" y2="212" stroke="#1a3a5c" stroke-width="1.5" opacity="0.85"/>
+          </g>
+
+          <!-- US Navy label -->
+          <rect x="230" y="240" width="82" height="22" rx="3" fill="white" opacity="0.88"/>
+          <text font-family="serif" font-weight="bold" font-size="9" x="271" y="251" text-anchor="middle" fill="#1a3a5c">US Navy</text>
+          <text font-family="serif" font-size="9" x="271" y="260" text-anchor="middle" fill="#555">monitoring strait</text>
+
+        </svg>
+      </div>
+      <div style="font-family:'DM Mono',monospace; font-size:9px; color:var(--gray); padding:6px 14px 8px; background:var(--cream); display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+        <span><span style="color:#C0392B; font-weight:bold;">✕</span> Reported mines</span>
+        <span><span style="color:#2c2a27; font-weight:bold;">▬</span> Tankers (Iran)</span>
+        <span><span style="color:#1a3a5c; font-weight:bold;">▬</span> US Navy</span>
+      </div>
+      <div style="font-family:'DM Mono',monospace; font-size:9px; color:var(--gray); padding:0 14px 8px; background:var(--cream);">Photo: NASA / ISS (iss064e046338) · Strait of Hormuz · Brent crude near $88/barrel</div>
+    </div>
+
+  </div>
+
+  <div class="section-rule red"><span>Deep Dives</span></div>
+
+  <div style="max-width: 680px; margin: 0; padding: 0 48px 80px;">
+
+    <div onclick="showPage('deepdive','deepdive-strait')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">01</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.35; margin-bottom:4px; color:var(--ink);">The Strait Standoff: From Dual Blockade to the Brink of a Deal</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Middle East · Naval Strategy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('deepdive','deepdive-nato')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">02</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.35; margin-bottom:4px; color:var(--ink);">Paper Tiger: How the Iran War Brought NATO to the Brink</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Defense & Diplomacy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('deepdive','deepdive-chicago')" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">03</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.35; margin-bottom:4px; color:var(--ink);">Drawn in Red: How Chicago Invented Modern Segregation — and Never Escaped It</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Housing · Race · Urban Policy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="showPage('deepdive','deepdive-trump')" class="story-card" style="display:flex; align-items:baseline; gap:16px; padding:12px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">04</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.35; margin-bottom:4px; color:var(--ink);">Understanding Donald Trump: How He Thinks, How He Decides, and How He Sees the World</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Profile · American Politics · Read →</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- END HOME -->
+
+
+<!-- ══════════ ABOUT PAGE ══════════ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-kicker">About This Publication</div>
+    <h2>My Briefing Book</h2>
+
+    <p>My name is Angela Cline and for more than twelve years I was an Intelligence Analyst at the Defense Intelligence Agency (DIA), writing for and briefing the people who needed it most — from the President of the United States to the Commanding General — U.S. Forces — Iraq. The highlight of my career was serving as Intelligence Briefer and Liaison to the Assistant Secretary of Defense for International Security Affairs and the Deputy Assistant Secretary of Defense for the Middle East. Every morning I arrived at the Pentagon just after midnight and began compiling their daily briefing books, selecting the most compelling and relevant intelligence that would impact U.S. interests.</p>
+
+    <p>I spent my career translating the world's most complex events into clear, actionable intelligence for the people who had to act on them.</p>
+
+    <p>Now I do it for you.</p>
+
+    <div class="about-pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h4>Compiled</h4>
+        <p>Every story earns its place. No filler, no noise — only what truly matters on the world stage.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h4>Sourced</h4>
+        <p>Every claim is attributed. Every analysis is built on named journalists, institutions and on-the-record reporting.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h4>Clear</h4>
+        <p>Complex events, clear writing. No jargon, no spin — just sharp, honest analysis you can trust.</p>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid var(--light-gray); padding-top: 32px; margin-top: 32px;">
+      <p style="font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">What My Briefing Book Is</p>
+      <p>A daily intelligence publication and home to in-depth analysis, profiles and essays — covering the most consequential international and national news with the sourcing, context and analytical depth the serious reader deserves.</p>
+      <p>No spin. No ideology. Just the briefing.</p>
+    </div>
+
+    <div style="border-top: 1px solid var(--light-gray); padding-top: 32px; margin-top: 32px;">
+      <p style="font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Why I Started This</p>
+      <p>For two years I talked myself out of it.</p>
+      <p>I knew there was a gap — a real one. The events shaping our country and our world deserve the kind of rigorous, sourced, dispassionate analysis that intelligence professionals are trained to provide. Not opinion. Not outrage. Not the noise that passes for journalism in too much of today's media landscape. An analyst's approach — where you follow the evidence, attribute every claim, explain the why behind the what, and leave your politics at the door.</p>
+      <p>I knew I could do that. I had spent over a decade doing exactly that for the most senior officials in the US government.</p>
+      <p>And yet I kept talking myself out of it. It felt safer to stay in the comfort zone. Putting yourself out there is a risk — and risk is uncomfortable, even for someone who spent years in one of the most high-stakes environments in the world. Especially, maybe, for someone like that.</p>
+      <p>What I know now is that not taking that risk made me miserable.</p>
+      <p>So here we are. My Briefing Book is what happens when you finally stop waiting for the right moment and start doing the thing you know you should have started two years ago.</p>
+      <p>I hope you find it valuable.</p>
+    </div>
+
+    <div style="border-top: 1px solid var(--light-gray); padding-top: 32px; margin-top: 32px;">
+      <p style="font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">A Note on How It's Made</p>
+      <p>Back then I had analysts from 17 agencies helping me every morning. Today I use Claude, Anthropic's AI assistant.</p>
+      <p>The editorial judgment, source selection and analysis are mine, built from 12+ years inside the intelligence and policy community. Claude helps me compile, draft and format at speed. I believe leveraging AI effectively is one of the most important skills in the modern intelligence and policy world — and My Briefing Book demonstrates that every day.</p>
+      <p>The analysis is mine. The discipline is mine. Claude makes it possible to deliver both to you every morning.</p>
+    </div>
+
+    <div style="border-top: 1px solid var(--light-gray); padding-top: 32px; margin-top: 32px;">
+      <p style="font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--red); margin-bottom:16px;">Subscribe</p>
+      <p>Paid subscribers receive the Daily Briefing delivered to their inbox every morning, My Perspective commentary, the Monthly Geopolitical Outlook, and full Deep Dive investigations — at <strong>$7/month</strong> or <strong>$70/year</strong>.</p>
+      <p>Founding Member tier available at <strong>$150/year</strong> for the first 100 subscribers only.</p>
+    </div>
+
+    <div class="about-sign">
+      <p><em>Angela Cline</em></p>
+    </div>
+
+  </div>
+</div>
+<!-- END ABOUT -->
+
+
+<!-- ══════════ DAILY BRIEFING PAGE ══════════ -->
+<div class="page" id="page-daily">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Published Each Morning</div>
+      <h1>Daily<br><em>Briefing</em></h1>
+      <p class="hero-sub">Your concise morning intelligence report — the essential international and national developments you need before the day begins.</p>
+    </div>
+  </section>
+
+  <div class="section-rule red"><span>Today's Briefing</span></div>
+
+  <div style="max-width: 820px; margin: 0 auto; padding: 0 48px 64px;">
+
+    <div style="border-left: 4px solid var(--red); padding-left: 24px; margin-bottom: 40px;">
+      <div class="story-region" style="margin-bottom: 4px;">🗓 Friday, June 12, 2026 — Morning Edition</div>
+      <p style="font-family:'Playfair Display',serif; font-size:13px; font-style:italic; color:var(--gray);">Five stories that matter today — compiled from overnight developments.</p>
+    </div>
+
+    <!-- Story 1: Settlement Reached -->
+    <div id="story-1" style="border-bottom: 1px solid var(--light-gray); padding-bottom: 28px; margin-bottom: 28px;">
+      <div class="story-region">🌍 International — Middle East</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.25;">Trump Says "Great Settlement" Reached With Iran — War Could End This Weekend</h3>
+      <p class="story-excerpt">According to <a href="https://www.nbcnews.com/world/iran/live-blog/live-updates-us-strikes-iran-trump-hormuz-closed-rcna349554" target="_blank" style="color:var(--red); text-decoration:underline;">NBC News</a>, President Trump said Wednesday night he had canceled planned strikes on Iran, saying a deal with Iran is expected to soon be "finalized." According to <a href="https://www.rferl.org/a/iran-war-us-hormuz-oil-blockade-gulf-israel/33640284.html" target="_blank" style="color:var(--red); text-decoration:underline;">RFE/RL</a>, Trump said a "great settlement" has been reached to end the three-month war, with a signing possible as soon as this weekend in Europe, and that the agreement would reopen the Strait of Hormuz. According to <a href="https://www.cbsnews.com/live-updates/iran-war-trump-us-strait-of-hormuz-attacks/" target="_blank" style="color:var(--red); text-decoration:underline;">CBS News</a>, Israeli Prime Minister Netanyahu spoke with Trump and expressed appreciation that final negotiations with Iran were nearing completion, and Trump reassured Israel that any deal would include the removal of Iran's enriched nuclear material. Iran has not confirmed that a deal has been reached.</p>
+      <div class="story-meta" style="margin-top:10px;">🕊️ Developing · Middle East · Iran · Peace Deal</div>
+    </div>
+
+    <!-- Story 2: Drones Shot Down -->
+    <div id="story-2" style="border-bottom: 1px solid var(--light-gray); padding-bottom: 28px; margin-bottom: 28px;">
+      <div class="story-region">⚓ International — Strait of Hormuz</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.25;">Hours After Trump's Announcement, US Shoots Down Iranian Drones Near Hormuz</h3>
+      <p class="story-excerpt">According to <a href="https://abcnews.com/International/live-updates/iran-live-updates-israel-iran-trade-strikes-trump/?id=133674243" target="_blank" style="color:var(--red); text-decoration:underline;">ABC News</a>, the US military shot down two Iranian drones attempting to strike ships in the Strait of Hormuz early Friday, hours after Trump's announcement of a settlement. According to <a href="https://www.rferl.org/a/iran-war-us-hormuz-oil-blockade-gulf-israel/33640284.html" target="_blank" style="color:var(--red); text-decoration:underline;">RFE/RL</a>, a senior US defense official said Iran had attempted to strike commercial vessels transiting the Strait, but that "traffic flow through the strait continues." According to <a href="https://www.nbcnews.com/world/iran/live-blog/live-updates-us-iran-drones-trump-deal-war-hormuz-tehran-rcna349750" target="_blank" style="color:var(--red); text-decoration:underline;">NBC News</a>, Iranian media reported separately that its forces had stopped a tanker from passing through the Strait, and Tehran said no final decision on a deal has been made — even as Trump continues to tout an imminent signing. The incident underscores how fragile the apparent breakthrough remains on the ground.</p>
+      <div class="story-meta" style="margin-top:10px;">⚠️ Developing · Strait of Hormuz · US Navy · Iran</div>
+    </div>
+
+    <!-- Story 3: Oil Crashes -->
+    <div id="story-3" style="border-bottom: 1px solid var(--light-gray); padding-bottom: 28px; margin-bottom: 28px;">
+      <div class="story-region">📊 International — Energy Markets</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.25;">Oil Plunges Toward $88 as Markets Rally on Settlement News</h3>
+      <p class="story-excerpt">According to <a href="https://www.rferl.org/a/iran-war-us-hormuz-oil-blockade-gulf-israel/33640284.html" target="_blank" style="color:var(--red); text-decoration:underline;">RFE/RL</a>, Brent crude futures fell $2.72, or 2.9%, to settle at $90.38 a barrel on Thursday after Trump's announcement, and extended losses into Friday's Asian trading toward the $88.40–$88.65 range — a sharp reversal from the four-year high of $126 hit earlier in the week. Asian equity markets rallied on the news, with Japan's Nikkei 225 surging more than 3% in early trading, climbing toward the 66,000–66,500 level. The scale of the reversal reflects just how much of the recent price surge was driven by fear of renewed strikes rather than an actual physical supply shortfall — fear that eased considerably the moment Trump signaled de-escalation.</p>
+      <div class="story-meta" style="margin-top:10px;">📈 Markets · Energy · Oil Prices</div>
+    </div>
+
+    <!-- Story 4: World Bank -->
+    <div id="story-4" style="border-bottom: 1px solid var(--light-gray); padding-bottom: 28px; margin-bottom: 28px;">
+      <div class="story-region">🌐 International — Global Economy</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.25;">World Bank Cuts Global Growth Forecast, Offers Up to $100 Billion in Emergency Aid</h3>
+      <p class="story-excerpt">According to <a href="https://www.cbsnews.com/live-updates/iran-war-trump-us-strait-of-hormuz-attacks/" target="_blank" style="color:var(--red); text-decoration:underline;">CBS News</a>, the World Bank's new Global Economic Prospects report forecasts worldwide growth will drop to 2.5% in 2026, down from 2.9% the year before, with headline inflation averaging 4% as the war drove energy prices sharply higher and pushed up borrowing costs. The bank said it was making up to $60 billion immediately available to developing countries hit hardest by the crisis, with that figure potentially rising to $100 billion over 15 months. Growth forecasts for two-thirds of the world's economies have been downgraded relative to projections made in January — a measure of how broadly the conflict's economic shockwaves have been felt, even in countries with no direct stake in the Strait of Hormuz.</p>
+      <div class="story-meta" style="margin-top:10px;">🌐 Global Economy · World Bank · Inflation</div>
+    </div>
+
+    <!-- Story 5: The Escalation That Preceded the Deal -->
+    <div id="story-5" style="border-bottom: 1px solid var(--light-gray); padding-bottom: 28px; margin-bottom: 28px;">
+      <div class="story-region">🌍 International — Middle East</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:10px; line-height:1.25;">The Two Days Before the Deal — A Downed Helicopter and a Threat to Seize Kharg Island</h3>
+      <p class="story-excerpt">According to <a href="https://www.nbcnews.com/world/iran/live-blog/live-updates-us-strikes-iran-trump-hormuz-closed-rcna349554" target="_blank" style="color:var(--red); text-decoration:underline;">NBC News</a>, Wednesday's settlement announcement followed a second consecutive day of direct strikes between the US and Iran after a US military helicopter was shot down. The US launched strikes and Tehran retaliated against American targets across the Middle East, with <a href="https://www.cbsnews.com/live-updates/iran-war-trump-us-strait-of-hormuz-attacks/" target="_blank" style="color:var(--red); text-decoration:underline;">CBS News</a> reporting that both Kuwait and Bahrain reported incoming strikes early Thursday, activating air defense systems and emergency sirens. Earlier in the standoff, Trump said the US would at some point seize Kharg Island and take "total control" of Iran's oil and gas industry — comments that, in retrospect, marked the peak of the crisis before the sudden de-escalation. The whiplash from active combat to a near-signed settlement within 48 hours illustrates how unpredictable this conflict has been at every stage.</p>
+      <div class="story-meta" style="margin-top:10px;">⏱ Context · Middle East · Iran · Escalation</div>
+    </div>
+
+    <div style="background: var(--cream); border: 1px solid var(--light-gray); padding: 24px 28px; margin-top: 16px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Editor's Note</div>
+      <p style="font-size:15px; font-style:italic; color:var(--gray); line-height:1.7;">Trump says a deal with Iran could be signed as soon as this weekend — but Iran has not confirmed an agreement, and US forces shot down Iranian drones near the Strait just hours after the announcement. My Briefing Book will update as the situation develops.</p>
+    </div>
+  </div>
+</div>
+<!-- END DAILY BRIEFING -->
+
+
+<!-- ══════════ DEEP DIVE PAGE ══════════ -->
+<div class="page" id="page-deepdive">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">In-Depth Analysis</div>
+      <h1>Deep<br><em>Dive</em></h1>
+      <p class="hero-sub">Extended investigations into the stories that demand more than a headline — fully reported, carefully sourced, and written for the serious reader.</p>
+    </div>
+  </section>
+
+  <div class="section-rule red"><span>In This Edition</span></div>
+
+  <!-- DEEP DIVE INDEX -->
+  <div style="max-width: 820px; margin: 0 auto; padding: 0 48px 48px; border-bottom: 2px solid var(--ink);">
+
+    <div onclick="document.getElementById('deepdive-strait').scrollIntoView({behavior:'smooth'})" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:14px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">01</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">The Strait Standoff: From Dual Blockade to the Brink of a Deal</p>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); margin-bottom:4px; line-height:1.5;">Trump says a "great settlement" has been reached with Iran — but hours later, US forces shot down Iranian drones near the Strait. The full story of how we got here.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Middle East · Naval Strategy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="document.getElementById('deepdive-nato').scrollIntoView({behavior:'smooth'})" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:14px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">02</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Paper Tiger: How the Iran War Brought NATO to the Brink</p>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); margin-bottom:4px; line-height:1.5;">Trump says NATO withdrawal is "beyond reconsideration" — a deep look at why he's furious, what Europe is scrambling to do, and what a post-NATO world could look like.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Defense & Diplomacy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="document.getElementById('deepdive-chicago').scrollIntoView({behavior:'smooth'})" class="story-card" style="display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--light-gray); padding:14px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">03</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Drawn in Red: How Chicago Invented Modern Segregation — and Never Escaped It</p>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); margin-bottom:4px; line-height:1.5;">The lines drawn on federal maps in the 1930s still determine life outcomes for millions of Chicagoans — a deeply sourced investigation into how segregation was built, codified and why it endures.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Housing · Race · Urban Policy · Read →</span>
+      </div>
+    </div>
+
+    <div onclick="document.getElementById('deepdive-trump').scrollIntoView({behavior:'smooth'})" class="story-card" style="display:flex; align-items:baseline; gap:16px; padding:14px 0; cursor:pointer;">
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--red); min-width:20px;">04</span>
+      <div>
+        <p style="font-family:'Playfair Display',serif; font-size:16px; font-weight:700; line-height:1.3; margin-bottom:4px; color:var(--ink);">Understanding Donald Trump: How He Thinks, How He Decides, and How He Sees the World</p>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); margin-bottom:4px; line-height:1.5;">A factual, non-partisan profile of the most consequential figure in modern American politics — built on record, stripped of ideology.</p>
+        <span style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red);">Profile · American Politics · Read →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-rule red"><span>Full Investigations</span></div>
+
+  <div style="padding: 0 48px; max-width: 1100px; margin: 0 auto 64px;">
+
+    <!-- NATO Deep Dive — Full Feature -->
+    <div id="deepdive-nato" style="border-bottom:2px solid var(--ink); padding-bottom:48px; margin-bottom:48px;">
+      <div class="story-region" style="font-size:11px;">🌍 Special Report — Transatlantic Relations · April 1, 2026</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:38px; font-weight:900; line-height:1.1; margin-bottom:16px; letter-spacing:-0.01em;">Paper Tiger: How the Iran War Brought NATO to the Brink</h2>
+      <p style="font-size:18px; line-height:1.8; color:#2c2a27; margin-bottom:8px; font-weight:300; font-style:italic;">Trump says US withdrawal is "beyond reconsideration." Europe is scrambling. And Putin is watching.</p>
+      <div class="story-meta" style="margin-bottom:28px;">📖 Deep Dive · 12 min read · Defense & Diplomacy</div>
+
+      <!-- Section 1 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Bombshell</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">In an interview published Wednesday by Britain's <a href="https://www.telegraph.co.uk" target="_blank" style="color:var(--red); text-decoration:underline;"><em>Daily Telegraph</em></a>, President Trump declared that withdrawing the United States from NATO is now "beyond reconsideration," calling the 32-nation alliance a "paper tiger." Asked directly whether he would reconsider US membership after the Iran war, Trump told the newspaper: "I was never swayed by NATO. I always knew they were a paper tiger, and Putin knows that too, by the way." According to <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a> and <a href="https://www.newsweek.com/iran-war-live-trump-to-address-nation-strikes-continue-11766515" target="_blank" style="color:var(--red); text-decoration:underline;"><em>Newsweek</em></a>, Trump will address the nation at 9pm Eastern tonight — and the state of the alliance is expected to feature prominently. The remarks represent the most serious threat to NATO's cohesion since its founding in 1949, and come at a moment when the alliance is already deeply fractured over the US-Israeli war on Iran.</p>
+
+      <!-- Section 2 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Why Is Trump So Frustrated?</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Trump's frustration has deep roots but the Iran war has brought every grievance to the surface at once. According to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a> and <a href="https://www.aljazeera.com/news/liveblog/2026/4/1/iran-live-trump-says-no-deal-needed-to-end-war-isfahan-steel-plants-hit" target="_blank" style="color:var(--red); text-decoration:underline;"><em>Al Jazeera</em></a>, when the United States and Israel launched surprise strikes on Iran on February 28, not a single NATO ally was consulted beforehand — not Britain, not France, not Germany. European governments were blindsided. Their refusal to participate was both political and legal: according to analysts cited by <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, the United Nations had not authorized the war, there was no evidence of an imminent Iranian attack on the US or Israel, and NATO's founding charter is explicitly a collective self-defense agreement — not a framework for military operations its members played no part in planning. Kamil Zwolski, a fellow on terrorism and conflict studies at the Royal United Services Institute, told CNN: "What Europeans mean when they say this war has no legal basis is that the United Nations has not approved it. They also mean that this is not a war of self-defense." The refusals came swiftly. According to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, Italy denied a US request to land military aircraft at a base in Sicily, with the Italian state broadcaster RAI reporting that the planes were already in flight when the request was turned down. Spain refused US access to its airspace entirely. Poland declined to redeploy Patriot missile batteries from NATO's eastern flank. Germany's defense minister said flatly, according to multiple reports: "This is not our war." Trump, who has long demanded NATO members spend 2% of GDP on defense and has repeatedly described the alliance as a one-way street, viewed the collective refusal as a betrayal. In a Truth Social post cited by <a href="https://www.cnbc.com" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNBC</em></a> and <a href="https://www.thenationalnews.com" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The National</em></a>, he wrote: "We no longer 'need,' or desire, the NATO Countries' assistance — WE NEVER DID!"</p>
+
+      <!-- Section 3 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Fallout, Country by Country</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">According to <a href="https://www.thenationalnews.com" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The National</em></a> and <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, Trump singled out Britain by name, telling Prime Minister Keir Starmer "you don't even have a navy" and mocking the Royal Navy's aircraft carriers as old and non-functional. He called France "unhelpful" for denying US military aircraft access to French airspace and criticized Prime Minister Starmer's focus on wind energy. In a moment of notable awkwardness reported by <a href="https://www.thenationalnews.com" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The National</em></a>, Trump posted his broadside against Britain on Truth Social minutes before the White House announced that King Charles and Queen Camilla would be arriving in Washington for a state visit in late April. Secretary of State Marco Rubio sharpened the rhetoric further, according to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, calling NATO "a one-way street" and saying the US may "re-examine" its commitments to the alliance after the war ends — comments Trump told reporters he was "glad" Rubio had made. According to <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a>, the Pentagon is also reportedly considering giving up its role as Supreme Allied Commander Europe — a position the United States has held without interruption since NATO's founding. Defense Secretary Pete Hegseth reinforced the message, telling reporters according to <a href="https://www.thenationalnews.com" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The National</em></a>: "A lot has been shown to the world about what our allies would be willing to do for the United States when we undertake an effort of this scope on behalf of the free world." European militaries have also been exposed as severely under-resourced. According to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, it took Britain several weeks just to get a single anti-missile destroyer stationed off Cyprus to protect UK assets — and without US support, no combination of European forces could reopen the Strait of Hormuz.</p>
+
+      <!-- Section 4 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Implications: What a Post-NATO World Could Look Like</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The strategic stakes are enormous. According to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, a sustained US withdrawal from NATO's framework — even short of formal departure — would represent the most consequential shift in the global security architecture since the end of the Cold War. For Europe, it would mean confronting Russia's ongoing war in Ukraine, an emboldened Iran, and an increasingly unpredictable Middle East without the American security umbrella that has underwritten 80 years of relative peace. NATO has already raised its defense spending target from 2% of GDP to 5% by 2035, according to <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a> — a figure that would require the largest European military buildup since World War II. For Ukraine, the implications are particularly grave. According to <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a>, US-brokered peace talks between Kyiv and Moscow — previously scheduled for this week — have already been postponed because of the Iran war, and any further fracturing of NATO's solidarity plays directly into Moscow's hands. As <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a> noted in its analysis, Russia has sought for decades to fracture the transatlantic alliance — and Trump himself acknowledged, in his Telegraph interview, that Putin is watching closely. For the United States itself, analysts warn the costs of going it alone would ultimately be measured in higher defense budgets, diminished intelligence partnerships, and a world in which projecting American power becomes far more expensive.</p>
+
+      <!-- Section 5 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Legal Obstacle</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">There is a significant legal barrier standing between Trump's rhetoric and action. According to <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a> and <a href="https://www.newsweek.com/iran-war-live-trump-to-address-nation-strikes-continue-11766515" target="_blank" style="color:var(--red); text-decoration:underline;"><em>Newsweek</em></a>, legislation passed under President Biden in December 2023 would require either two-thirds Senate approval or an act of Congress before any president could withdraw the United States from NATO unilaterally — a threshold Trump would struggle to clear given the current composition of the Senate. As <a href="https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-trump-address-nation-rcna266149" target="_blank" style="color:var(--red); text-decoration:underline;"><em>NBC News</em></a> noted, Trump has made similar threats before: in 2018, during his first term, he warned the US would leave if members failed to meet their spending obligations. All NATO members now meet the 2% threshold. The new bar is 5% by 2035.</p>
+
+      <!-- Section 6 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Europe's Response</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:28px;">European leaders have responded with a mix of defiance and urgency. According to <a href="https://www.newsweek.com/iran-war-live-trump-to-address-nation-strikes-continue-11766515" target="_blank" style="color:var(--red); text-decoration:underline;"><em>Newsweek</em></a>, British Prime Minister Keir Starmer said at a press conference Wednesday that the UK was "fully committed to NATO," calling it "the single most effective military alliance the world has ever seen," and emphasizing that Britain's "long-term national interest" required a closer partnership with European allies and the EU. According to <a href="https://www.cnn.com/2026/04/01/world/live-news/iran-war-us-trump-oil" target="_blank" style="color:var(--red); text-decoration:underline;"><em>CNN</em></a>, Canada's Prime Minister Mark Carney has called on what he described as "middle powers" to invest more in their own defense given that America's post-World War II security umbrella has become — in his words — "unreliable." European capitals are now engaged in urgent discussions about strategic autonomy: how quickly they can rebuild independent military capacity, and how much longer they can afford to assume Washington will be there when it matters.</p>
+
+      <div style="background: var(--cream); border-left: 4px solid var(--red); padding: 20px 24px; margin-top: 8px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">Sources</div>
+        <p style="font-size:13px; line-height:1.8; color:var(--gray);">Reporting drawn from: <em>The Daily Telegraph</em> (Trump interview) · <em>CNN</em> (alliance analysis, European refusals, Strait of Hormuz) · <em>NBC News</em> (live updates, NATO legislation) · <em>Newsweek</em> (live updates) · <em>The National</em> (Trump-Starmer exchange, Hegseth remarks) · <em>CNBC</em> (Trump Truth Social posts) · <em>Al Jazeera</em> (Iran war timeline) · Royal United Services Institute via CNN (legal analysis)</p>
+      </div>
+    </div>
+
+    <!-- Two secondary deep dives -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:48px;">
+      <div style="border-top:2px solid var(--ink); padding-top:20px;">
+        <div class="story-region">🇺🇸 National Investigation</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:24px; font-weight:700; line-height:1.2; margin-bottom:12px;">The Debt Machine: How Federal Spending Commitments Became Structural</h3>
+        <p style="font-size:15px; line-height:1.7; color:#3d3a36; font-weight:300;">An examination of mandatory spending growth, the politics that sustain it, and the scenarios under which fiscal pressure becomes fiscal crisis.</p>
+        <div class="story-meta" style="margin-top:12px;">📖 Analysis · 12 min · Economy & Policy</div>
+      </div>
+      <div style="border-top:2px solid var(--ink); padding-top:20px;">
+        <div class="story-region">🌐 Special Report — Technology</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:24px; font-weight:700; line-height:1.2; margin-bottom:12px;">Invisible Infrastructure: The Undersea Cables That Power Global Communication</h3>
+        <p style="font-size:15px; line-height:1.7; color:#3d3a36; font-weight:300;">More than 95% of international data flows through a fragile network of cables on the ocean floor. Who controls them — and who threatens them — is becoming a defining security question.</p>
+        <div class="story-meta" style="margin-top:12px;">📖 Investigation · 14 min · Technology & Security</div>
+      </div>
+    </div>
+
+    <!-- CHICAGO REDLINING DEEP DIVE -->
+    <div id="deepdive-chicago" style="border-top:3px double var(--ink); padding-top:48px; margin-top:8px; margin-bottom:64px;">
+      <div class="story-region" style="font-size:11px;">🇺🇸 National Investigation — Urban Policy & Race · April 1, 2026</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:38px; font-weight:900; line-height:1.1; margin-bottom:16px; letter-spacing:-0.01em;">Drawn in Red: How Chicago Invented Modern Segregation — and Never Escaped It</h2>
+      <p style="font-size:18px; line-height:1.8; color:#2c2a27; margin-bottom:8px; font-weight:300; font-style:italic;">A deeply sourced investigation into the federal policies, private actors and deliberate decisions that built one of America's most segregated cities — and why the lines drawn in the 1930s still determine life outcomes today.</p>
+      <div class="story-meta" style="margin-bottom:28px;">📖 Deep Dive · 15 min read · Housing · Race · Urban Policy</div>
+
+      <!-- Section 1 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Most Segregated City in America</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Chicago is one of the most diverse cities in the United States. It is also, by most measures, the most segregated. According to <a href="https://www.wbez.org/race-class-communities/2023/06/19/chicago-remains-the-most-segregated-big-city-in-america" target="_blank" style="color:var(--red); text-decoration:underline;">WBEZ</a>, which analyzed Brown University data from the 2020 census, Chicago's dissimilarity index for Black and white residents — a standard sociological measure of how unevenly distributed racial groups are across a city — stands at 80.04%. In practical terms that means roughly 80% of either Black or white Chicagoans would have to move neighborhoods to achieve an even racial distribution across the city. According to <a href="https://www.wttw.com/firsthand/segregation/how-did-chicago-become-so-segregated-by-inventing-modern-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW Chicago</a>, a 2017 study by the Metropolitan Planning Council and Urban Institute found that Chicago's racial divide costs the city $4.4 billion in lost income annually and contributes to hundreds of murders each year. The city's Black population has been declining since the 1980s — a direct consequence of conditions that segregation itself created. These are not accidents. According to <a href="https://www.wttw.com/firsthand/segregation/how-did-chicago-become-so-segregated-by-inventing-modern-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW</a>, the institutional structure of segregation was not merely imported to Chicago — it was invented and refined there, by some of the city's earliest power brokers, and proved "subtler and more durable" than systems that relied on the force of law alone.</p>
+
+      <!-- Section 2 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Great Migration and the Black Belt</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">To understand how Chicago became so segregated, you have to begin before the red lines were drawn. According to <a href="https://www.wttw.com/firsthand/segregation/mapping-chicago-racial-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW</a>, the first waves of Black migrants fleeing the Jim Crow South were confined to a narrow vertical strip of land near Lake Michigan known as the Chicago Black Belt — running along State Street roughly between Roosevelt Road and 79th Street. According to <a href="https://fourteeneastmag.com/index.php/2023/11/03/americas-most-segregated-city-how-covenants-and-other-policies-made-modern-chicago/" target="_blank" style="color:var(--red); text-decoration:underline;">Fourteen East Magazine</a>, citing researcher James Grossman of Northern Illinois University, approximately 500,000 Black southerners moved north between 1916 and 1919 alone — part of the broader Great Migration that would eventually bring more than 500,000 Black residents to Chicago. The city's white residents responded to this influx not with integration but with the systematic construction of barriers. Racial covenants — legally binding agreements that prohibited the sale of properties to Black buyers — began appearing in Chicago public records as early as the 1880s, according to Fourteen East, and became far more common in the 1920s as the Great Migration accelerated. In 1919, the tensions boiled over violently. According to <a href="https://www.wttw.com/firsthand/segregation/mapping-chicago-racial-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW</a>, the Race Riots of that year — part of what historians call the Red Summer of racial violence across the country — were sparked by an attempt to enforce segregation on the waters of Lake Michigan itself. Hundreds of Black Chicagoans were targeted, killed or injured.</p>
+
+      <!-- BLACK BELT MAP -->
+      <div style="margin: 24px 0 28px; border: 1px solid var(--light-gray); border-radius: 4px; overflow: hidden;">
+        <svg width="100%" viewBox="0 0 680 780" style="display:block;">
+          <rect x="480" y="40" width="180" height="700" fill="#B5D4F4" opacity="0.4"/>
+          <text font-family="serif" font-size="12" x="560" y="80" text-anchor="middle" fill="#185FA5">Lake Michigan</text>
+          <rect x="40" y="40" width="440" height="700" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5"/>
+          <line x1="40" y1="150" x2="480" y2="150" stroke="#B4B2A9" stroke-width="0.8"/>
+          <text font-family="serif" font-size="11" x="44" y="146" fill="#5F5E5A">Roosevelt Rd (12th St)</text>
+          <line x1="40" y1="270" x2="480" y2="270" stroke="#B4B2A9" stroke-width="0.5"/>
+          <text font-family="serif" font-size="11" x="44" y="266" fill="#5F5E5A">31st St</text>
+          <line x1="40" y1="390" x2="480" y2="390" stroke="#B4B2A9" stroke-width="0.8"/>
+          <text font-family="serif" font-size="11" x="44" y="386" fill="#5F5E5A">47th St</text>
+          <line x1="40" y1="510" x2="480" y2="510" stroke="#B4B2A9" stroke-width="0.5"/>
+          <text font-family="serif" font-size="11" x="44" y="506" fill="#5F5E5A">63rd St</text>
+          <line x1="40" y1="630" x2="480" y2="630" stroke="#B4B2A9" stroke-width="0.8"/>
+          <text font-family="serif" font-size="11" x="44" y="626" fill="#5F5E5A">79th St (southern boundary)</text>
+          <line x1="280" y1="40" x2="280" y2="740" stroke="#888780" stroke-width="1"/>
+          <text font-family="serif" font-size="11" x="280" y="56" text-anchor="middle" fill="#444441">State St</text>
+          <line x1="360" y1="40" x2="360" y2="740" stroke="#B4B2A9" stroke-width="0.5"/>
+          <text font-family="serif" font-size="11" x="360" y="56" text-anchor="middle" fill="#5F5E5A">Cottage Grove</text>
+          <line x1="200" y1="40" x2="200" y2="740" stroke="#B4B2A9" stroke-width="0.5"/>
+          <text font-family="serif" font-size="11" x="200" y="56" text-anchor="middle" fill="#5F5E5A">Wentworth</text>
+          <rect x="242" y="150" width="100" height="480" fill="#A32D2D" opacity="0.75" rx="2"/>
+          <text font-family="serif" font-weight="bold" font-size="13" x="292" y="310" text-anchor="middle" fill="#FCEBEB">The</text>
+          <text font-family="serif" font-weight="bold" font-size="13" x="292" y="328" text-anchor="middle" fill="#FCEBEB">Black</text>
+          <text font-family="serif" font-weight="bold" font-size="13" x="292" y="346" text-anchor="middle" fill="#FCEBEB">Belt</text>
+          <text font-family="serif" font-size="11" x="292" y="366" text-anchor="middle" fill="#F09595">1910s–1940s</text>
+          <rect x="80" y="270" width="160" height="180" fill="#B5D4F4" opacity="0.3" rx="2"/>
+          <text font-family="serif" font-weight="bold" font-size="12" x="160" y="352" text-anchor="middle" fill="#185FA5">Bridgeport</text>
+          <text font-family="serif" font-size="11" x="160" y="368" text-anchor="middle" fill="#185FA5">(white, Irish)</text>
+          <rect x="60" y="390" width="180" height="120" fill="#B5D4F4" opacity="0.2" rx="2"/>
+          <text font-family="serif" font-weight="bold" font-size="12" x="150" y="446" text-anchor="middle" fill="#185FA5">Back of the Yards</text>
+          <rect x="342" y="390" width="130" height="180" fill="#9FE1CB" opacity="0.25" rx="2"/>
+          <text font-family="serif" font-weight="bold" font-size="12" x="407" y="472" text-anchor="middle" fill="#0F6E56">Hyde Park</text>
+          <text font-family="serif" font-size="11" x="407" y="488" text-anchor="middle" fill="#0F6E56">(white, affluent)</text>
+          <text font-family="serif" font-size="11" x="292" y="238" text-anchor="middle" fill="#F09595">Douglas</text>
+          <text font-family="serif" font-size="11" x="292" y="430" text-anchor="middle" fill="#F09595">Grand Blvd</text>
+          <text font-family="serif" font-size="11" x="292" y="560" text-anchor="middle" fill="#F09595">Woodlawn</text>
+          <rect x="220" y="60" width="120" height="60" fill="#888780" opacity="0.2" rx="4" stroke="#5F5E5A" stroke-width="0.5"/>
+          <text font-family="serif" font-weight="bold" font-size="12" x="280" y="88" text-anchor="middle" fill="#444441">The Loop</text>
+          <text font-family="serif" font-size="11" x="280" y="105" text-anchor="middle" fill="#5F5E5A">(downtown)</text>
+          <circle cx="292" cy="210" r="5" fill="#791F1F"/>
+          <text font-family="serif" font-size="11" x="352" y="214" fill="#791F1F">Provident Hospital</text>
+          <line x1="297" y1="210" x2="350" y2="210" stroke="#791F1F" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <circle cx="292" cy="460" r="5" fill="#791F1F"/>
+          <text font-family="serif" font-size="11" x="352" y="464" fill="#791F1F">Regal Theater</text>
+          <line x1="297" y1="460" x2="350" y2="460" stroke="#791F1F" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <rect x="190" y="150" width="10" height="480" fill="#444441" opacity="0.6"/>
+          <text font-family="serif" font-size="11" x="185" y="560" text-anchor="end" fill="#444441">Dan Ryan</text>
+          <text font-family="serif" font-size="11" x="185" y="575" text-anchor="end" fill="#444441">Expressway</text>
+          <text font-family="serif" font-size="11" x="185" y="590" text-anchor="end" fill="#888780">(built 1960s)</text>
+          <text font-family="serif" font-size="11" x="460" y="680" text-anchor="middle" fill="#444441">N</text>
+          <line x1="460" y1="690" x2="460" y2="720" stroke="#444441" stroke-width="1"/>
+          <polygon points="460,670 455,685 465,685" fill="#444441"/>
+          <rect x="44" y="660" width="145" height="65" fill="white" stroke="#D3D1C7" stroke-width="0.5" rx="4"/>
+          <rect x="52" y="672" width="14" height="14" fill="#A32D2D" opacity="0.75" rx="1"/>
+          <text font-family="serif" font-size="11" x="72" y="682" fill="#444441">Black Belt (redlined)</text>
+          <rect x="52" y="694" width="14" height="14" fill="#B5D4F4" opacity="0.5" rx="1"/>
+          <text font-family="serif" font-size="11" x="72" y="704" fill="#444441">White neighborhoods</text>
+          <text font-family="serif" font-size="11" x="52" y="718" fill="#888780">Schematic · not to scale</text>
+          <text font-family="serif" font-weight="bold" font-size="12" x="260" y="755" text-anchor="middle" fill="#2C2C2A">Chicago Black Belt · ca. 1910–1940</text>
+          <text font-family="serif" font-size="11" x="260" y="772" text-anchor="middle" fill="#888780">Editorial reference map</text>
+        </svg>
+      </div>
+
+      <!-- Section 3 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">How the Federal Government Drew the Lines</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The private violence and racial covenants of the early 20th century created the conditions for segregation. The federal government then institutionalized it. According to the <a href="https://www.federalreservehistory.org/essays/redlining" target="_blank" style="color:var(--red); text-decoration:underline;">Federal Reserve History</a>, the Federal Housing Administration — created in 1934 in response to the Great Depression — was the architect of federally sponsored redlining from its very first year of operation. The FHA concluded that no loan could be considered economically sound if the property was located in a neighborhood that was or could become populated by Black people, on the grounds that property values might decline over the life of a 15 to 20 year mortgage. The FHA's 1938 Underwriting Manual explicitly warned against the "infiltration of inharmonious racial groups" and recommended racially restrictive covenants as a tool to protect loan investments. Simultaneously, the Home Owners' Loan Corporation — a New Deal agency — developed color-coded maps of American cities classifying neighborhoods by credit risk. According to the <a href="https://www.chicagohistory.org/redlining/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago History Museum</a>, new affluent and racially homogeneous areas received green designations, while Black and poor neighborhoods were outlined in red — giving rise to the term redlining. According to <a href="https://digitalchicagohistory.org/exhibits/show/restricted-chicago/other/redlining" target="_blank" style="color:var(--red); text-decoration:underline;">Digital Chicago History</a>, the FHA's chief economist Homer Hoyt had previously ranked various races and nationalities by order of "desirability" in his 1934 dissertation — and those rankings were embedded into the federal government's lending architecture. According to <a href="https://chicagoagentmagazine.com/2024/04/12/black-white-city/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Agent Magazine</a>, even a very well-maintained Black neighborhood could receive a D grade regardless of the condition of its homes or the creditworthiness of its residents — because the grading was based on race, not reality. The FHA's promise not to insure loans in D-graded areas kept banks from lending to Black families entirely, leaving two options for Chicago's Black residents: rent in the city's increasingly overcrowded segregated neighborhoods, or purchase on contract — a predatory arrangement with no legal protections — directly from the seller.</p>
+
+      <!-- Section 4 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Private Actors and the Real Estate Industry</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The federal government did not act alone. Private industry actively reinforced and expanded the system. According to <a href="https://chicagoagentmagazine.com/2024/04/12/black-white-city/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Agent Magazine</a>, in a 1943 brochure the National Association of Real Estate Boards warned its members against selling to Black buyers, suggesting they might be bootleggers, criminals or madames — and that even a "well-meaning broker" should work against any sale that would introduce Black residents to a white neighborhood. Until 1950, the National Association of Real Estate Boards' own code of ethics contained a canon explicitly prohibiting realtors from introducing to a neighborhood "members of any race or nationality" whose presence would harm property values. According to <a href="https://www.chicagomag.com/city-life/august-2017/how-redlining-segregated-chicago-and-america/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Magazine</a>, the metrics used by the HOLC to grade neighborhoods were grounded substantially in the work of Chicago economists and real estate professionals — meaning the city was not merely a victim of national policy but a generator of the ideology that drove it. Following World War II, according to the <a href="https://www.chicagoreporter.com/chicagos-250-year-history-of-segregation/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Reporter</a>, Urban Renewal legislation gave the city expanded powers to seize property for slum clearance. In a 15-year period, more than 80,000 Chicagoans were displaced — the vast majority Black — and moved into new, crowded, effectively segregated public housing. The construction of the Dan Ryan Expressway in the 1960s, according to <a href="https://www.wttw.com/firsthand/segregation/mapping-chicago-racial-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW</a>, was originally designed to run through Bridgeport — then Mayor Daley's neighborhood — before being redirected eight blocks east, installing a multi-lane physical barrier between white Bridgeport and the Black Belt that literally cemented the city's racial divide in concrete.</p>
+
+      <!-- Section 5 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Laws That Came Too Late</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The Supreme Court struck down racially restrictive covenants as unconstitutional in 1948. The Fair Housing Act banned redlining in 1968. The Equal Credit Opportunity Act followed in 1974, and the Community Reinvestment Act in 1977 attempted to push banks toward fair lending in underserved communities. But according to the <a href="https://www.chicagoreporter.com/chicagos-250-year-history-of-segregation/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Reporter</a>, private lenders took up the government's mantle after the official bans, making quiet use of discriminatory practices well into the 1960s. When explicit redlining was outlawed, according to the same reporting, homeowners associations turned to minimum lot sizes, single-family home requirements and minimum home values — practices that no longer expressly excluded Black buyers but were no less effective in preventing working-class people of color from entering wealthier neighborhoods. According to the <a href="https://www.chicagohistory.org/redlining/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago History Museum</a>, redlining's negative effects remained largely unrecognized by policymakers until the mid-1960s — by which point the South and West Sides had been effectively locked out of mortgage finance for three decades. Martin Luther King Jr. came to Chicago in 1966 to lead a march for fair housing through Marquette Park on the Southwest Side. He was attacked with bricks by a white mob. He would later say, according to <a href="https://www.wttw.com/firsthand/segregation/mapping-chicago-racial-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">WTTW</a>: "I have been in the Civil Rights Movement for years, all through the South, but I have never seen — not even in Alabama or Louisiana — mobs as hostile and hateful as this crowd."</p>
+
+      <!-- Section 6 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Lines That Never Disappeared</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The most striking fact about Chicago's segregation is not that it was created — it is that it has barely moved. According to <a href="https://www.axios.com/local/chicago/2022/02/17/chicago-redlining-then-and-now" target="_blank" style="color:var(--red); text-decoration:underline;">Axios Chicago</a>, citing FiveThirtyEight and ABC News analysis, Black residents are still living in the same neighborhoods that were designated "hazardous" by HOLC mapmakers in the 1930s. According to the <a href="https://www.chicagoreporter.com/chicagos-250-year-history-of-segregation/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Reporter</a>, houses in Chicago's former "Best" zones now have a median home value of $937,000, while houses in formerly redlined zones have a median home value of just $323,000 — a gap of more than $600,000 that traces directly to decisions made by federal bureaucrats in the 1930s. A 2017 study by Federal Reserve Bank of Chicago economists, according to <a href="https://www.chicagomag.com/city-life/august-2017/how-redlining-segregated-chicago-and-america/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Magazine</a>, found that redlining had a persistent adverse impact on homeownership rates, home values and credit scores still visible in 2010 data. According to the <a href="https://www.aclu.org/podcast/the-consequences-of-chicagos-history-of-housing-segregation" target="_blank" style="color:var(--red); text-decoration:underline;">ACLU</a>, for every dollar loaned by banks in Chicago's white neighborhoods today, they invest just 12 cents in Black neighborhoods and 13 cents in Latino areas — figures drawn from a 2020 study by WBEZ and City Bureau. A typical household's wealth in the richest area of Chicago is 206 times higher than in the poorest area. According to research cited in the <a href="https://en.wikipedia.org/wiki/Redlining" target="_blank" style="color:var(--red); text-decoration:underline;">academic literature on redlining</a>, Black children born to parents in the bottom household income quintile have a 2.5% chance of rising to the top quintile — compared with 10.6% for white children. The system built in Chicago in the 1930s did not merely shape the city. It shaped the life chances of every person born into it.</p>
+
+      <!-- Section 7 -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">What It Would Take to Change</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:28px;">Chicago's segregation did not happen by accident and it will not be undone by accident. Researchers and policy advocates broadly agree that meaningful change requires intervention at every level where segregation was constructed — federal lending policy, zoning law, public housing allocation, school funding formulas and investment in formerly redlined communities. According to <a href="https://www.chicagomag.com/city-life/august-2017/how-redlining-segregated-chicago-and-america/" target="_blank" style="color:var(--red); text-decoration:underline;">Chicago Magazine</a>, reporting on the Federal Reserve Bank of Chicago's research, the same analysis that documents government policy creating segregation also suggests that government policy can address its legacy — if the political will exists to deploy it at the necessary scale. According to <a href="https://www.chicagohistory.org/redlining/" target="_blank" style="color:var(--red); text-decoration:underline;">the Chicago History Museum</a>, it was community activists in Chicago — led by figures like Gale Cincotta of the Austin neighborhood — who first identified and named the redlining problem publicly in the 1970s, spearheading reform that influenced the nation. The city that invented modern segregation was also among the first to name it. Whether it can lead the nation in dismantling it remains the open question — and the one that matters most to the millions of Chicagoans still living inside lines drawn nearly a century ago.</p>
+
+      <div style="background: var(--cream); border-left: 4px solid var(--red); padding: 20px 24px; margin-top: 8px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">Sources</div>
+        <p style="font-size:13px; line-height:1.8; color:var(--gray);">Reporting and analysis drawn from: <em>WBEZ Chicago</em> (Brown University segregation data) · <em>WTTW Chicago / Firsthand: Segregation</em> · <em>Chicago History Museum</em> · <em>Chicago Magazine</em> (Federal Reserve Bank of Chicago research) · <em>Chicago Reporter</em> · <em>Axios Chicago</em> (FiveThirtyEight/ABC News data) · <em>Federal Reserve History</em> · <em>Digital Chicago History</em> · <em>Chicago Agent Magazine</em> · <em>Fourteen East Magazine</em> · <em>ACLU</em> (WBEZ/City Bureau 2020 lending study) · <em>Metropolitan Planning Council & Urban Institute</em> (Cost of Segregation, 2017)</p>
+      </div>
+    </div>
+
+    <!-- STRAIT OF HORMUZ DEEP DIVE -->
+    <div id="deepdive-strait" style="border-top:3px double var(--ink); padding-top:48px; margin-top:8px; margin-bottom:64px;">
+      <div class="story-region" style="font-size:11px;">🌍 Special Report — Middle East · Updated June 12, 2026</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:38px; font-weight:900; line-height:1.1; margin-bottom:16px; letter-spacing:-0.01em;">The Strait Standoff: From Dual Blockade to the Brink of a Deal</h2>
+      <p style="font-size:18px; line-height:1.8; color:#2c2a27; margin-bottom:8px; font-weight:300; font-style:italic;">After three and a half months, two blockades, a brief return to open war, and a threat to seize Iran's main oil export terminal, Trump says a settlement has been reached. Here is how the world's most critical waterway got here — and why the situation remains fragile even as a deal is announced.</p>
+      <div class="story-meta" style="margin-bottom:28px;">📖 Deep Dive · 16 min read · Middle East · Energy · Naval Strategy</div>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Where Things Stand — June 12</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">According to <a href="https://www.nbcnews.com/world/iran/live-blog/live-updates-us-strikes-iran-trump-hormuz-closed-rcna349554" target="_blank" style="color:var(--red); text-decoration:underline;">NBC News</a> and <a href="https://www.rferl.org/a/iran-war-us-hormuz-oil-blockade-gulf-israel/33640284.html" target="_blank" style="color:var(--red); text-decoration:underline;">RFE/RL</a>, President Trump announced Wednesday night that he had canceled planned strikes on Iran and that a "great settlement" had been reached — one that would reopen the Strait of Hormuz and could be signed as soon as this weekend. Brent crude fell from its $126 four-year high to roughly $88 within 24 hours, and Asian markets rallied sharply on the news. But the announcement came at the end of a remarkable 48 hours: a US helicopter had been shot down, both sides exchanged direct strikes, Kuwait and Bahrain activated air defenses against incoming fire, and Trump had threatened to seize Kharg Island — Iran's main oil export terminal — and take "total control" of its oil and gas industry. Hours after the settlement announcement, <a href="https://abcnews.com/International/live-updates/iran-live-updates-israel-iran-trade-strikes-trump/?id=133674243" target="_blank" style="color:var(--red); text-decoration:underline;">ABC News</a> reported that US forces shot down two Iranian drones near the Strait after Tehran fired on a transiting tanker, and Iranian state media said no final decision on a deal had been made. The pattern that has defined this conflict since February — rapid swings between open combat and apparent breakthroughs — appears to be continuing even at this late stage.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">How We Got Here — A Timeline</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The conflict began on February 28, when the US and Israel launched a surprise war on Iran. Iran responded by closing the Strait of Hormuz. A first ceasefire in early April collapsed within days after attacks on commercial shipping. On April 13, the US imposed a naval blockade on Iranian ports — creating what <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" style="color:var(--red); text-decoration:underline;">the Guardian described as a "dual blockade,"</a> with Iran blockading the Gulf and the US blockading Iran. That blockade ran for six weeks, from April 13 to May 29, intercepting 85 vessels and seizing three ships according to CENTCOM, while at least 26 vessels bypassed it according to Lloyd's List. In early June, according to <a href="https://www.cnbc.com/2026/06/01/iran-us-negotiations-strait-of-hormuz.html" target="_blank" style="color:var(--red); text-decoration:underline;">CNBC</a>, Iran halted negotiations entirely and vowed to "completely" close the Strait in retaliation for Israeli operations against Hezbollah in Lebanon — a sign that the conflict's Lebanon dimension never fully went away even as attention focused on the Gulf. That breakdown set the stage for this week's flare-up: renewed direct strikes, a downed helicopter, the Kharg Island threat — and then, abruptly, Wednesday's settlement announcement.</p>
+
+      <div style="background:#fff3f3; border-left: 4px solid var(--red); padding: 16px 20px; margin: 16px 0 28px;">
+        <p style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">By the Numbers — Total Cost of the Crisis</p>
+        <p style="font-size:15px; line-height:1.75; color:#2c2a27; font-weight:300; margin:0;">According to the <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" style="color:var(--red); text-decoration:underline;">2026 Strait of Hormuz crisis</a> tracking, the toll over three and a half months includes one tugboat sunk, at least 17 merchant ships damaged (7 abandoned), two merchant ships captured, 12 seafarers killed or missing, and one port worker killed in Bahrain. The UAE's state oil company estimates full flows through the Strait will not resume until 2027 even if a deal is reached quickly — pre-conflict, around 3,000 vessels used the Strait each month, and World Trade Organization data shows a 95% reduction in crude oil shipping and a 99% reduction in LNG shipping through the Gulf during the crisis.</p>
+      </div>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Methods — How Iran Closed the Strait</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Throughout the conflict, Iran relied on a combination of tactics rather than a single conventional blockade — a pattern worth understanding for how quickly it could be reconstituted if the current settlement fails.</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">According to <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" style="color:var(--red); text-decoration:underline;">reporting on the 2026 Strait of Hormuz crisis</a>, the IRGC has launched 21 confirmed attacks on merchant ships and threatened that any vessel entering the strait would be set on fire. That threat alone was sufficient to make the risk calculus impossible for most commercial shipping companies and their insurers. Iran does not need to attack every ship — it only needs to demonstrate it will attack enough of them that the rest turn back.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Sea Mines</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Iran has reportedly laid sea mines in the strait. Mines are inexpensive to deploy, extremely difficult and time-consuming to clear, and create a persistent threat that keeps ships away even when no active attack is occurring. The presence of even a small number of mines forces vessels and naval escorts to slow dramatically or avoid the area entirely — and clearing them requires specialized equipment that takes weeks to deploy effectively.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Cheap Drones</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">According to <a href="https://www.cnn.com/2026/03/26/middleeast/how-iran-controls-strait-of-hormuz-explained-intl-vis" target="_blank" style="color:var(--red); text-decoration:underline;">CNN</a>, Iran's unconventional warfare methods include cheap drones that can be deployed in large numbers and are difficult for naval escorts to neutralize cost-effectively. The asymmetry is the point: Iran spends very little to impose enormous economic damage. A drone that costs a few thousand dollars can threaten a tanker worth hundreds of millions and carrying cargo worth billions.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Insurance Warfare</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">This is the most underappreciated method. According to the <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" style="color:var(--red); text-decoration:underline;">2026 crisis reporting</a>, war risk insurance was removed for ships transiting on March 5, making the economic risk too high for most ship owners. You do not need to sink every ship — you just need insurers to refuse coverage, and the commercial shipping system grinds to a halt entirely on its own. No insurance means no captain will sail, regardless of military escorts.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Selective Passage as Leverage</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Most cleverly, according to <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" style="color:var(--red); text-decoration:underline;">the same reporting</a>, Iran announced it would allow ships from China, Russia, India, Iraq and Pakistan to transit — demonstrating it can manage the strait selectively, rewarding friendly nations and punishing adversaries. According to <a href="https://time.com/article/2026/04/07/strait-of-hormuz-countries-pass-deals-iran-us-war-trump/" target="_blank" style="color:var(--red); text-decoration:underline;">Time</a>, this strategy undermines US leverage because it shows Iran exercising sovereign control rather than simply blockading — a critical distinction in international law and diplomacy.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Tolls — A Diplomatic Opening That Came and Went</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">During the brief early-April ceasefire, according to <a href="https://www.aljazeera.com/economy/2026/4/9/what-is-irans-strait-of-hormuz-protocol-and-will-other-nations-accept-it" target="_blank" style="color:var(--red); text-decoration:underline;">Al Jazeera</a>, Iranian media reported that Iran was considering charging up to $2 million per vessel to transit the Strait — effectively monetizing control of the world's most important energy chokepoint. Oman rejected the idea as a violation of international maritime law, and the proposal went nowhere once that ceasefire collapsed within days after Revolutionary Guard gunboats fired on a tanker and a container ship was struck, according to <a href="https://www.cnbc.com/2026/04/19/oil-price-iran-war-strait-hormuz-tanker.html" target="_blank" style="color:var(--red); text-decoration:underline;">CNBC</a>. It is a useful illustration of how quickly windows for negotiated solutions have opened and closed throughout this conflict — a pattern that should temper optimism about this week's announcement until a signed agreement actually materializes.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Six-Week US Counter-Blockade</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The most significant US response was what analysts called a "dual blockade" — Iran blockading the Gulf, and the US blockading Iran. Following the failure of the Islamabad ceasefire talks on April 11-12, according to <a href="https://www.cnn.com/2026/04/23/politics/us-military-plans-iran-targets-strait-of-hormuz" target="_blank" style="color:var(--red); text-decoration:underline;">CNN</a>, Trump announced the US Navy would blockade Iran's ports entirely, intercepting any vessel attempting to enter or leave Iranian coastal areas. The blockade took effect on April 13 under the command of Admiral Brad Cooper at US Central Command, backed by 19 US warships in the Middle East — including three aircraft carriers — and a further seven in the Indian Ocean. By the time it ended on May 29, CENTCOM reported the operation had intercepted 85 vessels and seized three ships outright, while Lloyd's List put the number of vessels that bypassed it entirely at 26. Iran retaliated by seizing two cargo ships of its own.</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">CENTCOM was careful to define the blockade's scope precisely — <a href="https://www.npr.org/2026/04/16/nx-s1-5783870/strait-of-hormuz-naval-blockade" target="_blank" style="color:var(--red); text-decoration:underline;">NPR</a> reported that it applied only to vessels entering or departing Iranian ports and coastal areas, and explicitly did not impede freedom of navigation for ships transiting the strait to and from non-Iranian ports. In practice, US forces intercepted ships, boarded them and redirected them — acting, as one analyst described it, "like a traffic cop at sea." On April 19, the first direct seizure occurred when the 31st Marine Expeditionary Unit and the destroyer USS Spruance seized the Iranian-flagged vessel Touska. According to <a href="https://www.aljazeera.com/news/2026/4/24/how-long-can-iran-survive-the-uss-hormuz-blockade" target="_blank" style="color:var(--red); text-decoration:underline;">Al Jazeera</a>, the US said the blockade was costing Iran $500 million daily — a figure analysts said Iran could likely absorb until around August given roughly 80% of its oil exports transit the Strait.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">From Blockade's End to the Brink of War — and Back</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">The blockade's end on May 29 did not bring resolution. Oil prices kept climbing through May, peaking at $126 a barrel on a four-year high in late May/early June as <a href="https://www.cbsnews.com/live-updates/iran-war-trump-oil-prices-hegseth-costs-strait-of-hormuz/" target="_blank" style="color:var(--red); text-decoration:underline;">CBS News</a> reported Trump was weighing a new wave of "short and powerful" strikes on Iranian infrastructure. Compounding Iran's economic strain, a record internet blackout — already past 70 days — was costing the country an estimated $250 million daily on top of the blockade's toll, according to <a href="https://www.bloomberg.com/news/articles/2026-05-09/iran-businesses-buckle-under-strain-of-record-internet-shutdown" target="_blank" style="color:var(--red); text-decoration:underline;">Bloomberg</a>. Then, according to <a href="https://www.cnbc.com/2026/06/01/iran-us-negotiations-strait-of-hormuz.html" target="_blank" style="color:var(--red); text-decoration:underline;">CNBC</a>, Iran cut off negotiations entirely in early June, vowing to "completely" close the Strait over Israel's operations against Hezbollah in Lebanon. That breakdown led directly to this week's two days of open combat — a downed US helicopter, direct strikes on both sides, air-defense activations in Kuwait and Bahrain, and Trump's threat to seize Kharg Island — before Wednesday's sudden settlement announcement.</p>
+
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">What This Episode Reveals About Both Sides</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">According to analysis by <a href="https://www.justsecurity.org/135899/strait-hormuz-tolls-crisis/" target="_blank" style="color:var(--red); text-decoration:underline;">Just Security</a>, Iran demonstrated throughout this crisis that it can deny transit at an acceptable cost to itself — the Strait is just 24 miles wide at its narrowest point with no alternative route, and Iran's long coastline gives it near-unlimited positions from which to threaten passing ships. The six-week US blockade, for all its scale, still saw roughly a quarter of intercepted traffic bypass it. At the same time, the speed of this week's reversal — from a downed helicopter and a threat to seize Kharg Island to a "great settlement" within 48 hours — suggests that neither side has the appetite for the all-out, prolonged conflict that a genuine attempt to permanently resolve the Strait by force would require. Both sides have repeatedly signaled maximalist positions and then stepped back from them. That pattern is the single most important thing to understand heading into whatever comes next, deal or no deal.</p>
+
+      <div style="background:#fff3f3; border-left: 4px solid var(--red); padding: 16px 20px; margin: 16px 0 28px;">
+        <p style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">The Bottom Line</p>
+        <p style="font-size:15px; line-height:1.75; color:#2c2a27; font-weight:300; margin:0;">After three and a half months, two blockades, a brief return to open war and a threat to seize Iran's main oil terminal, Trump says a settlement has been reached that would reopen the Strait of Hormuz. Oil has fallen from $126 to roughly $88 and markets have rallied on the news. But Iran has not confirmed a deal, and within hours of the announcement US forces were shooting down Iranian drones near the Strait. Given how many times this conflict has swung between de-escalation and renewed combat, the appropriate posture is cautious optimism — real progress appears to have been made, but the Strait will not be considered genuinely secure until a signed agreement holds for an extended period without incident.</p>
+      </div>
+
+      <div style="background: var(--cream); border-left: 4px solid var(--red); padding: 20px 24px; margin-top: 8px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">Sources</div>
+        <p style="font-size:13px; line-height:1.8; color:var(--gray);">Reporting drawn from: <em>NBC News</em> (settlement announcement & strikes) · <em>RFE/RL</em> (settlement details & oil prices) · <em>CBS News</em> (World Bank report & Netanyahu call) · <em>ABC News</em> (drones shot down) · <em>CNN</em> (Strait of Hormuz explainer & US military plans) · <em>NPR</em> (naval blockade analysis) · <em>Al Jazeera</em> (blockade impact) · <em>CNBC</em> (April tanker attacks & June negotiations breakdown) · <em>Bloomberg</em> (internet blackout cost) · <em>Time</em> (selective passage analysis) · <em>Just Security</em> (strategic analysis) · <em>2026 Strait of Hormuz Crisis reporting</em> · <em>2026 US Naval Blockade of Iran reporting</em> · <em>House of Commons Library</em> (conflict overview) · <em>Lloyd's List</em> (shipping data)</p>
+      </div>
+    </div>
+
+    <!-- TRUMP PROFILE -->
+    <div id="deepdive-trump" style="border-top:3px double var(--ink); padding-top:48px; margin-top:8px;">
+      <div class="story-region" style="font-size:11px;">🇺🇸 Profile — The 47th President · April 1, 2026</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:38px; font-weight:900; line-height:1.1; margin-bottom:16px; letter-spacing:-0.01em;">Understanding Donald Trump: How He Thinks, How He Decides, and How He Sees the World</h2>
+      <p style="font-size:18px; line-height:1.8; color:#2c2a27; margin-bottom:8px; font-weight:300; font-style:italic;">A factual, non-partisan profile of the most consequential and polarizing figure in modern American politics — stripped of ideology, built on record.</p>
+      <div class="story-meta" style="margin-bottom:28px;">📖 Profile · 15 min read · American Politics</div>
+
+      <!-- Section 1: Origins -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">Where He Came From</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Donald John Trump was born on June 14, 1946 in Queens, New York — the fourth of five children of Fred Trump, a successful outer-borough real estate developer, and Mary Anne MacLeod, a Scottish immigrant. The family's roots are modest by the standards of Trump's later mythology: according to <a href="https://www.history.com/articles/donald-trump-father-mother-ancestry" target="_blank" style="color:var(--red); text-decoration:underline;">History.com</a> and <a href="https://www.politifact.com/factchecks/2019/apr/04/donald-trump/despite-what-donald-trump-keeps-saying-his-father-/" target="_blank" style="color:var(--red); text-decoration:underline;">PolitiFact</a>, his paternal grandfather Friedrich Trump emigrated from Kallstadt, Germany to New York in 1885 at age 16 — illegally, as he left to avoid compulsory military service — and built a modest fortune as a barber, restaurateur and early real estate investor before dying in the 1918 flu pandemic. Fred Trump built his fortune developing middle-class rental housing in Brooklyn and Queens — a decidedly unglamorous business that nevertheless made him wealthy and politically connected within the Democratic machine of New York's outer boroughs. Trump attended the New York Military Academy as a teenager before studying at Fordham University and transferring to the University of Pennsylvania's Wharton School of Finance, where he earned an undergraduate degree in economics in 1968. During the Vietnam War he received four student deferments and one medical deferment for bone spurs and was not drafted. He has never served in the military — a biographical detail that sits in contrast to his longstanding personal identification with military strength and generals.</p>
+
+      <!-- Section 2: The Father's Influence -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Two Men Who Built His Worldview</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">To understand how Trump thinks, two figures matter above all others: his father Fred, and the family's pastor, Norman Vincent Peale. According to biographer Gwenda Blair, author of <a href="https://www.simonandschuster.com/books/The-Trumps/Gwenda-Blair/9780743210799" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The Trumps: Three Generations That Built an Empire</em></a> — considered the definitive family biography — Fred Trump's overall message to his sons was to "compete, win, be a killer." Blair, speaking to <a href="https://www.pbs.org/wgbh/frontline/interview/gwenda-blair/" target="_blank" style="color:var(--red); text-decoration:underline;">PBS Frontline</a>, described Fred as a disciplinarian who rewarded success and punished failure — a transactional parent in a transactional household. Trump has kept a picture of his father in the Oval Office throughout both presidencies. Fred Trump was also a devoted follower of Norman Vincent Peale, the author of <a href="https://www.amazon.com/Power-Positive-Thinking-Norman-Vincent/dp/0743234804" target="_blank" style="color:var(--red); text-decoration:underline;"><em>The Power of Positive Thinking</em></a>, and the family attended Peale's Marble Collegiate Church in midtown Manhattan. According to analysis published by <a href="https://9takes.com/personality-analysis/Donald-Trump" target="_blank" style="color:var(--red); text-decoration:underline;">9takes</a>, the core Peale teaching — that a confident and optimistic thought pattern can override facts — became the operating system of Trump's psychology. Trump has himself been described as "the single most successful practitioner of Peale's philosophy." The practical consequence: Trump does not process failure the way most people do. He has said publicly: "I never had a failure, because I always turned a failure into a success" — a statement that is less a boast than a literal description of how he reframes reality. His brother Fred Jr.'s tragic arc — Fred abandoned the family business to become an airline pilot, struggled with alcoholism, and died at 43 — also left a lasting mark. According to <a href="https://www.biography.com/political-figures/donald-trump" target="_blank" style="color:var(--red); text-decoration:underline;">Biography.com</a>, Trump has cited his brother's death as the reason he abstains from alcohol, cigarettes and drugs entirely — a rarely noted but consequential personal discipline for a man so often associated with excess.</p>
+
+      <!-- Section 3: Business Career -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">The Business Career: What It Actually Tells Us</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Trump's business career is simultaneously more impressive and more complicated than either his supporters or critics typically acknowledge. He joined his father's company after college and by the mid-1970s had moved the family business from the outer boroughs into Manhattan — a genuine and significant entrepreneurial leap. His most notable early success was the renovation of the decrepit Commodore Hotel near Grand Central Station, which he reopened as the Grand Hyatt in 1980 — a complex deal that involved a 40-year property tax abatement, the first ever granted to a commercial property in New York City. In 1983 he opened Trump Tower, which became a global landmark. By 1989, Forbes valued his net worth at $1.5 billion and he appeared on the cover of Time magazine. However, the full picture is more complex. Trump's hotels and casino businesses filed for bankruptcy six times between 1991 and 2009. According to the <a href="https://millercenter.org/president/trump/life-presidency" target="_blank" style="color:var(--red); text-decoration:underline;">Miller Center</a>, the situation grew so severe in the early 1990s that his father purchased $3 million in casino chips — later judged an illegal loan — to help make an interest payment. After those bankruptcies, most major banks declined to lend to Trump, with Deutsche Bank as the notable exception. What emerged from those years was a different business model: rather than building and owning assets outright, Trump increasingly licensed his name — to buildings, golf courses, hotels and branded products — a pivot that proved highly lucrative and ultimately led to The Apprentice, which ran for 14 seasons from 2004 to 2015 and rebuilt his public image as a business titan on a mass scale.</p>
+
+      <!-- Section 4: How He Thinks -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">How He Actually Makes Decisions</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">One of the most persistent misconceptions about Trump is that his decision-making is purely impulsive. The reality, according to behavioral science analysis published by <a href="https://www.directorsandboards.com/uncategorised/singledonald-trump-and-deciding-and-re-deciding/" target="_blank" style="color:var(--red); text-decoration:underline;">Directors & Boards</a>, is more nuanced: Trump has a decisive public style — fast, firm, straight-talking — but a flexible operating style in private that involves rapid directional changes. In <em>The Art of the Deal</em>, according to analysis by <a href="https://9takes.com/personality-analysis/Donald-Trump" target="_blank" style="color:var(--red); text-decoration:underline;">9takes</a>, Trump described his process as: "I ask and ask until I begin to get a gut feeling about something. And that's when I make a decision." He did not use traditional market research firms. He walked construction sites, rode in cabs, spoke to building superintendents and restaurant owners. Barbara Res, who ran the Trump Tower construction site for four years, confirmed: "He did listen to us." According to the <a href="https://www.aei.org/op-eds/trumps-worldview-isnt-as-unpredictable-as-you-think/" target="_blank" style="color:var(--red); text-decoration:underline;">American Enterprise Institute</a>, Trump sees tactical unpredictability itself as a strategic virtue — a tool that keeps both adversaries and allies off balance. He has said so explicitly. This is not chaos; it is a calculated method. According to <a href="https://nycfpa.org/03/13/trumps-centralized-decision-making-global-impacts/" target="_blank" style="color:var(--red); text-decoration:underline;">NYCFPA</a>, his foreign policy decision-making is highly centralized, with loyalty to him personally outweighing expertise or institutional experience when selecting advisors. According to 9takes, Trump told reporters in 2018: "I like conflict. I like having two people with different points of view. I like watching it, I like seeing it, and I think it's the best way to go" — a management philosophy that explains the high turnover and internal competition that has characterized both his business empire and his administrations.</p>
+
+      <!-- Section 5: His Worldview -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">How He Sees the World</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Trump's worldview is remarkably consistent and has been so for decades — a point often missed in coverage that treats each controversy as a fresh aberration. According to analysis by the <a href="https://spectator.clingendael.org/en/publication/one-year-making-america-great-again-trumps-worldview" target="_blank" style="color:var(--red); text-decoration:underline;">Clingendael Institute</a>, Trump placed full-page advertisements in major US newspapers as early as 1987 — nearly three decades before his first presidential run — expressing views on foreign policy that are essentially identical to those he holds today: that America's allies exploit it, that military strength is the only language adversaries respect, and that the US consistently gets the worst of its international deals. At the core, according to the <a href="https://www.aei.org/op-eds/trumps-worldview-isnt-as-unpredictable-as-you-think/" target="_blank" style="color:var(--red); text-decoration:underline;">American Enterprise Institute</a>, is a deeply transactional view of international relations: "transactionalism is good; America's trade agreements and alliances are lousy bargains; democratic values and human rights are overrated." According to the Clingendael Institute, Trump's deal-making philosophy is essentially zero-sum — as he expressed in his book <em>Great Again</em>: "The side that needs the deal the most is the one that should walk away with the least." In such a worldview, win-win outcomes are naive and compromise is weakness. This explains NATO, the Iran war, and virtually every major foreign policy move of his second term: from his perspective, he is simply applying to geopolitics the same logic he applied to Manhattan real estate. According to <a href="https://theloop.ecpr.eu/machiavellian-philosophy-donald-trump/" target="_blank" style="color:var(--red); text-decoration:underline;">the European Consortium for Political Research</a>, scholars have characterized this worldview as closer to Machiavellian political realism than traditional conservatism — acting in pursuit of national power and interest without a constraining moral framework. It is worth noting that former National Security Advisor John Bolton, who served under Trump, told <a href="https://thehill.com/homenews/campaign/4948511-john-bolton-donald-trump-fascism-2024/" target="_blank" style="color:var(--red); text-decoration:underline;">CNN's Kaitlan Collins</a>: "Donald Trump doesn't really have a philosophy as we understand it in political terms. It's really all connected with how things benefit Donald Trump." Bolton's view represents one end of the interpretive spectrum — others, including the AEI, argue the consistency of Trump's positions over 40 years suggests something more coherent than Bolton allows.</p>
+
+      <!-- Section 6: Domestically -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">How He Sees America</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:16px;">Domestically, according to analysis by <a href="https://www.baronpa.com/library/understanding-trumpism-nationalism-populism-and-industrialism" target="_blank" style="color:var(--red); text-decoration:underline;">Baron Public Affairs</a>, Trumpism rests on three interlocking pillars: nationalism, populism, and industrialism. The nationalism is not merely rhetorical — it reflects a genuine belief that America's post-World War II commitment to a rules-based international order came at the direct expense of American workers, particularly in manufacturing. The populism targets what Trump characterizes as a self-serving coastal elite — legal, financial and creative — that has accumulated power and prosperity at the expense of the working class. The industrialism is the economic program: a belief, consistent since the 1980s, that tangible manufacturing jobs confer human dignity in ways that the digital economy does not. This is why his trade policy — aggressive tariffs, reshoring manufacturing, confronting China — is not a departure from his character but an expression of it. Trump was the first person elected to the US presidency with no prior government or military experience — a biographical fact that his supporters view as a feature and his critics view as a flaw, but which in either case profoundly shapes how he approaches institutions, norms and established process.</p>
+
+      <!-- Section 7: What Drives Him -->
+      <p style="font-family:'Playfair Display',serif; font-size:17px; font-weight:700; margin-bottom:10px; color:var(--ink); border-top: 1px solid var(--light-gray); padding-top: 20px;">What Actually Drives Him</p>
+      <p style="font-size:17px; line-height:1.85; color:#2c2a27; font-weight:300; margin-bottom:28px;">Perhaps the most illuminating window into Trump's psychology is not his policies but his personal contradictions. He is a teetotaler in a world of excess. He identifies deeply with the military but never served. He built a career on debt but preaches strength. He came from inherited wealth but positions himself as a champion of the working class. He calls himself a winner while having filed for bankruptcy six times. According to the <a href="https://www.aei.org/op-eds/trumps-worldview-isnt-as-unpredictable-as-you-think/" target="_blank" style="color:var(--red); text-decoration:underline;">American Enterprise Institute</a>, he started his first term threatening war with North Korea and within months was calling Kim Jong Un a pen pal and saying "we fell in love." He called a New York mayoral candidate a "communist lunatic" and then met him in the Oval Office and emerged describing him as "a very rational person." What unifies these apparent contradictions, according to analysis by 9takes and the Clingendael Institute, is that Trump's positions are less ideological than instrumental — calibrated to achieve a specific outcome rather than to express a fixed belief. The outcome he is always pursuing, whether in business or politics, is the same one Fred Trump's household instilled in him decades ago: winning. Understanding that — stripped of partisan interpretation — is perhaps the most useful lens through which to read everything else.</p>
+
+      <div style="background: var(--cream); border-left: 4px solid var(--red); padding: 20px 24px; margin-top: 8px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:8px;">Sources</div>
+        <p style="font-size:13px; line-height:1.8; color:var(--gray);">Reporting and analysis drawn from: <em>Gwenda Blair, The Trumps: Three Generations That Built an Empire</em> · <em>PBS Frontline</em> (Blair interview) · <em>History.com</em> (Trump ancestry) · <em>PolitiFact</em> (Friedrich Trump emigration) · <em>Miller Center</em> (1990s financial crisis) · <em>Biography.com</em> · <em>American Enterprise Institute</em> · <em>Clingendael Institute</em> · <em>Baron Public Affairs</em> · <em>European Consortium for Political Research</em> · <em>Directors & Boards</em> · <em>9takes</em> · <em>NYCFPA</em> · <em>CNN / The Hill</em> (Bolton remarks)</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- END DEEP DIVE -->
+
+
+<!-- ══════════ ESSAYS PAGE ══════════ -->
+<div class="page" id="page-essays">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Perspective & Opinion</div>
+      <h1>Essays &<br><em>Commentary</em></h1>
+      <p class="hero-sub">Considered opinion on the forces shaping our world — written to provoke thought, not confirm it.</p>
+    </div>
+  </section>
+
+  <div class="section-rule red"><span>Latest Essays</span></div>
+
+  <div style="max-width: 820px; margin: 0 auto; padding: 0 48px 64px;">
+
+    <article style="border-bottom: 1px solid var(--light-gray); padding-bottom: 36px; margin-bottom: 36px;">
+      <div class="story-region">✍️ Essay — Foreign Policy</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; line-height:1.15; margin-bottom:14px; letter-spacing:-0.01em;">The Myth of Managed Decline: Why Accepting Weakness Is a Strategy, Not a Retreat</h2>
+      <p style="font-size:17px; line-height:1.8; font-weight:300; color:#2c2a27; margin-bottom:14px;">There is a growing school of thought in Western foreign policy circles that suggests a graceful retreat from global commitments is both inevitable and wise. This essay argues the opposite — that managed decline is not a strategy but an abdication dressed in the language of prudence.</p>
+      <div class="story-meta">Opinion · Foreign Policy · 8 min read</div>
+    </article>
+
+    <article style="border-bottom: 1px solid var(--light-gray); padding-bottom: 36px; margin-bottom: 36px;">
+      <div class="story-region">✍️ Essay — National Affairs</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; line-height:1.15; margin-bottom:14px; letter-spacing:-0.01em;">On the Exhaustion of Political Language</h2>
+      <p style="font-size:17px; line-height:1.8; font-weight:300; color:#2c2a27; margin-bottom:14px;">When every policy becomes existential and every opponent becomes an enemy, the words that once carried democratic weight — compromise, consensus, deliberation — begin to lose their meaning altogether. A reflection on what we lose when political language collapses into theater.</p>
+      <div class="story-meta">Opinion · Politics & Society · 6 min read</div>
+    </article>
+
+    <article style="border-bottom: 1px solid var(--light-gray); padding-bottom: 36px; margin-bottom: 36px;">
+      <div class="story-region">✍️ Essay — Economics</div>
+      <h2 style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; line-height:1.15; margin-bottom:14px; letter-spacing:-0.01em;">Why Economists Keep Getting the Big Calls Wrong</h2>
+      <p style="font-size:17px; line-height:1.8; font-weight:300; color:#2c2a27; margin-bottom:14px;">From the 2008 financial crisis to post-pandemic inflation, the profession's most celebrated models have repeatedly missed the moments that mattered most. A look at the structural incentives that reward precision over accuracy.</p>
+      <div class="story-meta">Opinion · Economics · 7 min read</div>
+    </article>
+
+    <div style="background:var(--ink); color:var(--white); padding:32px 36px; margin-top:8px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">A Note on Essays</div>
+      <p style="font-size:15px; line-height:1.7; color:rgba(255,255,255,0.8); font-weight:300;">The essays in <em>My Briefing Book</em> represent considered, independent commentary. They are designed to challenge assumptions — including, sometimes, your own.</p>
+    </div>
+
+  </div>
+</div>
+<!-- END ESSAYS -->
+
+<!-- ══════════ BACKGROUND PAGE ══════════ -->
+<div class="page" id="page-background">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">Context & Explainers</div>
+      <h1>Background<br><em>Notes</em></h1>
+      <p class="hero-sub">What you need to understand the news — sourced context on the stories that matter.</p>
+    </div>
+  </section>
+
+  <div class="section-rule red"><span>Background Notes</span></div>
+
+  <div style="max-width: 820px; margin: 0 auto; padding: 0 48px 80px;">
+    <div style="background:var(--ink); color:var(--white); padding:32px 36px; margin-top:8px;">
+      <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">About Background Notes</div>
+      <p style="font-size:15px; line-height:1.7; color:rgba(255,255,255,0.8); font-weight:300;">Background Notes provide sourced context on the major stories in the news — explaining the history, mechanics and stakes behind the headlines. New notes are added as major stories develop. Check the Deep Dive tab for the latest in-depth investigations.</p>
+    </div>
+  </div>
+</div>
+<!-- END BACKGROUND -->
+
+<footer>
+  <div class="footer-title">My Briefing Book</div>
+  <p>What You Need to Know &nbsp;·&nbsp; <span id="footer-year"></span></p>
+</footer>
+
+<script>
+  // Live date
+  const now = new Date();
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('live-date').textContent = now.toLocaleDateString('en-US', opts).toUpperCase();
+  document.getElementById('footer-year').textContent = now.getFullYear();
+
+  // Page navigation
+  function showPage(id, anchor) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-bar a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (anchor) {
+      setTimeout(function() {
+        var el = document.getElementById(anchor);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 400);
+    }
+    return false;
+  }
+</script>
+
+</body>
+</html>
